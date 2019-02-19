@@ -34,7 +34,7 @@ def main(sample_csv, flowcell_dir, reference_hmm, hivdb_xml):
     summarize_hivdb(hivdb_xml)
     calls = []
     with open(sample_csv) as in_handle:
-        for flowcell, sample in (l.strip().split(",") for l in in_handle):
+        for flowcell, sample in (l.strip().split(",") for l in in_handle if l.strip()):
             print(flowcell, sample)
             bam_file = os.path.join(flowcell_dir, flowcell, flowcell, "final", sample,
                                     "%s-ready.bam" % sample)
@@ -119,7 +119,7 @@ def summarize_sample_calls(in_file, aavf_files):
     out_file = os.path.join(os.getcwd(), "%s-calls.csv" % os.path.splitext(os.path.basename(in_file))[0])
     with open(out_file, "w") as out_handle:
         writer = csv.writer(out_handle)
-        writer.writerow(["sample", "gene", "pos", "ref", "alt", "altfreq", "altcound", "coverage",
+        writer.writerow(["sample", "gene", "pos", "ref", "alt", "altfreq", "altcount", "coverage",
                          "filter", "drug", "drugcat"])
         for sample, aavf_file in aavf_files:
             reader = parser.Reader(aavf_file)
